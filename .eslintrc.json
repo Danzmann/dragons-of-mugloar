@@ -11,7 +11,8 @@
     "rules": {
         "no-console": 1,
         "no-debugger": 1,
-        "indent": ["error", 4]
+        "indent": ["error", 4],
+        "no-tabs": 0
     },
     "parserOptions": {
         "parser": "babel-eslint"
