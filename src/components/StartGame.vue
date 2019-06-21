@@ -9,13 +9,16 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
     name: 'start',
 
     methods: {
 
-        startGame() {
+        async startGame() {
+            const response = await axios.get('https://dragonsofmugloar.com/api/v2/game/start');
+
             // start game here
             this.$emit('game-start', true);
         },
