@@ -12,10 +12,12 @@ export default {
 
 <style scoped lang="scss">
 
-.ads-wrapper {
-    background-image: url('../assets/scrool-background-2.jpg');
-    height: 1180px;
-    width: 900px;
+.adds-wrapper {
+    background-image: url('../assets/scroll-background-2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 600px;
+    width: 450px;
 }
 
 </style>
