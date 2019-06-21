@@ -3,12 +3,13 @@
         <div class="header">
             <img alt="Dragons of Mulogar" src="./assets/logo.png">
         </div>
-        <StartGame v-if='!this.isStarted' v-on:game-start="isStarted = true"/>
-        <MainGame v-if='this.isStarted' msg="Welcome to Your Vue.js App"/>
+        <StartGame v-if='playerInfo.id === 0'/>
+        <MainGame v-if='playerInfo.id !== 0' msg="Welcome to Your Vue.js App"/>
 	</div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import MainGame from './components/MainGame.vue';
 import StartGame from './components/StartGame.vue';
 
@@ -19,6 +20,16 @@ export default {
     data: () => ({
         isStarted: false,
     }),
+
+    computed: {
+        ...mapState([
+            'playerInfo',
+        ]),
+    },
+
+    updated() {
+        console.log(this.playerInfo);
+    },
 
     components: {
         MainGame,

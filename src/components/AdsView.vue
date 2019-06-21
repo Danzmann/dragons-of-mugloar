@@ -1,6 +1,6 @@
 <template>
-    <div>
-    
+    <div class="adds-wrapper">
+
     </div>
 </template>
 
@@ -10,6 +10,12 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  
+<style scoped lang="scss">
+
+.ads-wrapper {
+    background-image: url('../assets/scrool-background-2.jpg');
+    height: 1180px;
+    width: 900px;
+}
+
 </style>

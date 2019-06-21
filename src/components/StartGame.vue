@@ -2,25 +2,22 @@
     <div class="start-game-wrapper">
         <span>Are you ready to start?</span>
 
-        <div v-on:click="startGame" class="start-game-buttons">
+        <div v-on:click="beginGame()" class="start-game-buttons">
             <a href="#" class="yellow-btn">Start</a>
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
+import { mapActions } from 'vuex';
 
 export default {
     name: 'start',
 
     methods: {
-
-        async startGame() {
-            const response = await axios.get('https://dragonsofmugloar.com/api/v2/game/start');
-
-            // start game here
-            this.$emit('game-start', true);
+        ...mapActions(['startGame']),
+        beginGame() {
+            this.startGame();
         },
     },
 };

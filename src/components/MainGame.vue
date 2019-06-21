@@ -1,14 +1,31 @@
 <template>
-	<div class="hello">
-		<h1>{{ msg }}</h1>
+	<div class="main-game-wrapper">
+		<AdsView />
+        
+        <ShopView />
 	</div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import AdsView from './AdsView.vue';
+import ShopView from './ShopView.vue';
+
 export default {
     name: 'MainGame',
     props: {
         msg: String,
+    },
+
+    computed: {
+        ...mapState([
+            'playerInfo',
+        ]),
+    },
+
+    components: {
+        AdsView,
+        ShopView,
     },
 };
 </script>

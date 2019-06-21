@@ -12,7 +12,24 @@
         "no-console": 1,
         "no-debugger": 1,
         "indent": ["error", 4],
-        "no-tabs": 0
+        "no-tabs": 0,
+        "no-param-reassign": [
+            "error",
+            {
+              "props": true,
+              "ignorePropertyModificationsFor": [
+                "state",
+                "acc",
+                "e",
+                "ctx",
+                "req",
+                "request",
+                "res",
+                "response",
+                "$scope"
+              ]
+            }
+        ]
     },
     "parserOptions": {
         "parser": "babel-eslint"
