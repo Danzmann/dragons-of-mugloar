@@ -31,7 +31,45 @@
                     </table>
                 </div>
                 <div class="ad-info">
-
+                    <div class="ad-info-header">
+                        <h3 v-if="selectedAd === -1">Choose an ad in the list on the left</h3>
+                        <!-- Wrapper for tooltip of cursive writting (in case of
+                        difficulty in reading), tooltip with regular text appears on mouse hover -->
+                        <div class="tooltip-wrapper" v-if="selectedAd >= 0">
+                            <h3 class="cursive">{{adsList[selectedAd].message}}</h3>
+                            <h3 class="tooltip">{{adsList[selectedAd].message}}</h3>
+                        </div>
+                        <div class="ad-details" v-if="selectedAd >= 0">
+                            <div class="details-wrapper">
+                                <span>Reward: </span>
+                                <div class="tooltip-wrapper">
+                                    <span class="cursive">{{adsList[selectedAd].reward}}</span>
+                                    <span class="tooltip">{{adsList[selectedAd].reward}}</span>
+                                </div>
+                            </div>
+                            <div class="details-wrapper">
+                                <span>Expires in: </span>
+                                <div class="tooltip-wrapper">
+                                    <span class="cursive">{{adsList[selectedAd].expiresIn}}</span>
+                                    <span class="tooltip">{{adsList[selectedAd].expiresIn}}</span>
+                                </div>
+                            </div>
+                            <div class="details-wrapper">
+                                <span>Risk: </span>
+                                <div class="tooltip-wrapper">
+                                    <span class="cursive">{{adsList[selectedAd].probability}}</span>
+                                    <span class="tooltip">{{adsList[selectedAd].probability}}</span>
+                                </div>
+                            </div>
+                            <div class="details-wrapper">
+                                <span>Tip: </span>
+                                <div class="tooltip-wrapper">
+                                    <!--<span class="cursive">{{adsList[selectedAd].probability}}</span>-->
+                                    <!--<span class="tooltip">{{adsList[selectedAd].probability}}</span>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <ShopView />
@@ -57,6 +95,8 @@ export default {
     computed: {
         ...mapState([
             'playerInfo',
+            'selectedAd',
+            'adsList',
         ]),
     },
 
@@ -68,6 +108,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+    @import '../styles/utilities.scss';
+
     .window-wrapper {
         .main-game-wrapper {
             max-width: 1300px;
@@ -82,6 +124,8 @@ export default {
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;
+                align-items: center;
+                // generalize
                 .player-header-info {
                     display: flex;
                     flex-direction: column;
@@ -101,18 +145,42 @@ export default {
 
                     margin-left: 30px;
                     margin-right: 30px;
-                    min-width: 300px;
+                    min-width: 320px;
                     min-height: 220px;
                     background-image: url('../assets/parchment-background-1.png');
                     background-size: cover;
                 }
+                // generalize
                 .ad-info {
                     margin-left: 30px;
                     margin-right: 30px;
-                    min-width: 300px;
-                    min-height: 300px;
+                    min-width: 390px;
+                    min-height: 270px;
                     background-image: url('../assets/parchment-background-1.png');
                     background-size: cover;
+                    padding: 15px;
+
+                    .ad-info-header {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+
+                    .ad-details {
+                        margin-top: 10px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: left;
+                        justify-content: center;
+
+                        // generalize
+                        .details-wrapper {
+                            display: flex;
+                            span {
+                                margin-left: 10px;
+                            }
+                        }
+                    }
                 }
             }
         }
