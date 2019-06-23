@@ -23,6 +23,7 @@ export default new Vuex.Store({
     mutations: {
         START_GAME: (state, info) => { state.playerInfo = info; },
         GET_ADD_LIST: (state, list) => { state.adsList = list; },
+        SELECT_AD: (state, index) => { state.selectedAd = index; },
         SOLVED_ADD: (state, adId, reward) => {
             state.playerInfo = { ...state.playerInfo, ...reward };
             state.adsList = state.adsList.filter(item => (item.adId !== adId));
@@ -85,6 +86,18 @@ export default new Vuex.Store({
         }),
     },
     getters: {
-        
+        getDifficultyLevel: state => (index) => {
+            const writtenLevels = [
+                'piece of cake',
+                'walk in the park',
+                'quite likely',
+                'hmmm....',
+                'gamble',
+                'risky',
+                'playing with fire',
+                'suicide mission',
+            ];
+            return writtenLevels.indexOf(state.adsList[index].probability.toLowerCase()) + 1;
+        },
     },
 });

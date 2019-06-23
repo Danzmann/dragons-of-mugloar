@@ -1,7 +1,7 @@
 <template>
     <div class="adds-wrapper">
         <div class="ads-scrolling-container" v-if="adsList.length > 0">
-            <div class="ad-wrapper" v-for="(ad, index) in adsList" v-bind:key="index">
+            <div class="ad-wrapper" v-for="(ad, index) in adsList" v-bind:key="index" v-on:click="selectAd(index)">
                 <div class="details-wrapper">
                     <div class="tooltip-wrapper">
                         <span class="cursive">{{'* '+adsList[index].message}}</span>
@@ -10,7 +10,7 @@
                 </div>
                 <div class="details-wrapper">
                     <span>Risk: </span>
-                    <span class="cursive">{{'X '.repeat(5)}}</span>
+                    <span class="cursive">{{'X '.repeat(getDifficultyLevel(index))}}</span>
                 </div>
             </div>
         </div>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
     name: 'AdsView',
@@ -33,6 +33,15 @@ export default {
         ...mapState([
             'adsList',
         ]),
+        ...mapGetters([
+            'getDifficultyLevel',
+        ]),
+    },
+
+    methods: {
+        ...mapMutations({
+            selectAd: 'SELECT_AD',
+        }),
     },
 };
 </script>
