@@ -100,6 +100,10 @@ export default {
         ]),
     },
 
+    mounted() {
+        console.log(this.playerInfo);
+    },
+
     components: {
         AdsView,
         ShopView,

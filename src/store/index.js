@@ -75,8 +75,7 @@ export default new Vuex.Store({
                     response = delete response.message;
                     response = delete response.success;
                     context.commit('SOLVED_ADD', adId, response.data);
-                }
-                else {
+                } else {
                     context.commit('FAILED_ADD', adId);
                 }
                 resolve();
@@ -86,6 +85,6 @@ export default new Vuex.Store({
         }),
     },
     getters: {
-
+        
     },
 });

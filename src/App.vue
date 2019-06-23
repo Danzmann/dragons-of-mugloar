@@ -3,8 +3,8 @@
         <div class="header">
             <img alt="Dragons of Mulogar" src="./assets/logo.png">
         </div>
-        <StartGame v-if='playerInfo.id === 0'/>
-        <MainGame v-if='playerInfo.id !== 0' msg="Welcome to Your Vue.js App"/>
+        <StartGame v-if='playerInfo.gameId === 0'/>
+        <MainGame v-if='playerInfo.gameId !== 0' msg="Welcome to Your Vue.js App"/>
 	</div>
 </template>
 
@@ -28,6 +28,10 @@ export default {
     },
 
     updated() {
+        console.log(this.playerInfo);
+    },
+
+    mounted() {
         console.log(this.playerInfo);
     },
 
