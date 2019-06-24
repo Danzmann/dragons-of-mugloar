@@ -68,6 +68,9 @@
                                     <!--<span class="tooltip">{{adsList[selectedAd].probability}}</span>-->
                                 </div>
                             </div>
+                            <div class="button-wrapper" v-on:click="solveAdd(adsList[selectedAd].adId)">
+                                <a href="#" class="yellow-btn">Solve task</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,7 +85,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import AdsView from './AdsView.vue';
 import ShopView from './ShopView.vue';
 
@@ -101,7 +104,11 @@ export default {
     },
 
     mounted() {
-        console.log(this.playerInfo);
+        //console.log(this.playerInfo);
+    },
+
+    methods: {
+        ...mapActions(['solveAdd']),
     },
 
     components: {
@@ -185,6 +192,10 @@ export default {
                             span {
                                 margin-left: 10px;
                             }
+                        }
+
+                        .button-wrapper {
+                            margin-top: 5px;
                         }
                     }
                 }
