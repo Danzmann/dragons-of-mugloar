@@ -1,0 +1,33 @@
+{
+    "eslint.validate": [
+      {
+        "language": "vue",
+        "autoFix": true
+      },
+      {
+        "language": "javascript",
+        "autoFix": true
+      },
+      {
+        "language": "javascriptreact",
+        "autoFix": true
+      }
+    ],
+    "eslint.options": { "configFile": "./.eslintrc.json" },
+    "eslint.nodePath": "./node_modules",
+    "eslint.provideLintTask": true,
+    "editor.formatOnType": true,
+    "eslint.workingDirectories": [
+        "./src"
+    ],
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "scssFormatter.useTabs": true,
+    "scssFormatter.tabWidth": 4,
+    "editor.detectIndentation": false,
+    "typescript.validate.enable": false,
+    "vetur.format.options.tabSize": 4,
+    "vetur.format.options.useTabs": true,
+    "vetur.format.scriptInitialIndent": true,
+    "vetur.format.styleInitialIndent": true,
+    "vetur.validation.script": false,
+}

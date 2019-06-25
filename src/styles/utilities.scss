@@ -1,0 +1,37 @@
+//generalize
+.cursive {
+    font-family: 'Kristi', cursive;
+    font-size: 25px;
+}
+
+//generalize!!!!!!!!!!!!!!
+.tooltip-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+    /* Tooltip text */
+.tooltip-wrapper .tooltip {
+    font-family: initial;
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 5;
+}
+
+    /* Show the tooltip text when you mouse over*/
+    .tooltip-wrapper:hover .tooltip {
+    visibility: visible;
+    transition-delay: 0.5s;
+    width: 120px;
+    top: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}

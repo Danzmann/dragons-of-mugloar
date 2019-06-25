@@ -1,0 +1,39 @@
+{
+    "root": true,
+    "env": {
+        "node": true,
+        "browser": true
+    },
+    "extends": [
+        "plugin:vue/essential",
+        "@vue/airbnb"
+    ],
+    "rules": {
+        "no-console": 1,
+        "no-debugger": 1,
+        "indent": ["error", 4],
+        "no-tabs": 0,
+        "no-param-reassign": [
+            "error",
+            {
+              "props": true,
+              "ignorePropertyModificationsFor": [
+                "state",
+                "acc",
+                "e",
+                "ctx",
+                "req",
+                "request",
+                "res",
+                "response",
+                "$scope"
+              ]
+            }
+        ]
+    },
+    "parserOptions": {
+        "parser": "babel-eslint"
+    },
+    "plugins": ["html"]
+    
+}

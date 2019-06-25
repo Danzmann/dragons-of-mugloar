@@ -1,0 +1,58 @@
+.yellow-btn {
+	-moz-box-shadow: 0px 1px 0px 0px #1c1b18;
+	-webkit-box-shadow: 0px 1px 0px 0px #1c1b18;
+	box-shadow: 0px 1px 0px 0px #1c1b18;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #eae0c2), color-stop(1, #d1a326));
+	background:-moz-linear-gradient(top, #eae0c2 5%, #d1a326 100%);
+	background:-webkit-linear-gradient(top, #eae0c2 5%, #d1a326 100%);
+	background:-o-linear-gradient(top, #eae0c2 5%, #d1a326 100%);
+	background:-ms-linear-gradient(top, #eae0c2 5%, #d1a326 100%);
+	background:linear-gradient(to bottom, #eae0c2 5%, #d1a326 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#eae0c2', endColorstr='#d1a326',GradientType=0);
+	background-color:#eae0c2;
+	-moz-border-radius:15px;
+	-webkit-border-radius:15px;
+	border-radius:15px;
+	border:2px solid #333029;
+	display:inline-block;
+	cursor:pointer;
+	color:#23241f;
+	font-family:Arial;
+	font-size:14px;
+	font-weight:bold;
+	padding:12px 16px;
+	text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
+    :hover {
+        background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #d1a326), color-stop(1, #eae0c2));
+        background:-moz-linear-gradient(top, #d1a326 5%, #eae0c2 100%);
+        background:-webkit-linear-gradient(top, #d1a326 5%, #eae0c2 100%);
+        background:-o-linear-gradient(top, #d1a326 5%, #eae0c2 100%);
+        background:-ms-linear-gradient(top, #d1a326 5%, #eae0c2 100%);
+        background:linear-gradient(to bottom, #d1a326 5%, #eae0c2 100%);
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#d1a326', endColorstr='#eae0c2',GradientType=0);
+        background-color:#d1a326;
+    }
+    :active {
+        position:relative;
+        top:1px;
+    }
+}
+
+.handwritten-border {
+    box-sizing:border-box;
+    background:transparent;
+    padding:1rem 1rem;
+    margin:0 1rem;
+    transition:all .5s ease;
+    color:#41403E;
+    .lined.thick {
+        border:solid 7px #41403E;
+    }
+    .lined.thin {
+        border:solid 2px #41403E;
+        letter-spacing:1px;
+        box-shadow: 20px 38px 34px -26px hsla(0,0%,0%,.2);
+        border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    }
+}
