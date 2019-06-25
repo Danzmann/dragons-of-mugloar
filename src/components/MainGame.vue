@@ -64,11 +64,11 @@
                             <div class="details-wrapper">
                                 <span>Tip: </span>
                                 <div class="tooltip-wrapper">
-                                    <!--<span class="cursive">{{adsList[selectedAd].probability}}</span>-->
-                                    <!--<span class="tooltip">{{adsList[selectedAd].probability}}</span>-->
+                                    <span class="cursive">{{this.tipForSelectedAd}}</span>
+                                    <span class="tooltip">{{this.tipForSelectedAd}}</span>
                                 </div>
                             </div>
-                            <div class="button-wrapper" v-on:click="solveAdd(adsList[selectedAd].adId)">
+                            <div class="button-wrapper" v-on:click="solveTask(adsList[selectedAd].adId)">
                                 <a href="#" class="yellow-btn">Solve task</a>
                             </div>
                         </div>
@@ -85,7 +85,12 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import {
+    mapState,
+    mapActions,
+    mapGetters,
+    mapMutations,
+} from 'vuex';
 import AdsView from './AdsView.vue';
 import ShopView from './ShopView.vue';
 
@@ -101,14 +106,114 @@ export default {
             'selectedAd',
             'adsList',
         ]),
+        ...mapGetters([
+            'getDifficultyLevel',
+        ]),
     },
 
-    mounted() {
-        //console.log(this.playerInfo);
+    data() {
+        return {
+            tipForSelectedAd: '',
+        };
     },
 
     methods: {
         ...mapActions(['solveAdd']),
+        ...mapMutations({
+            endGame: 'END_GAME',
+        }),
+
+        /**
+         * @method solveTask will dispatch action solveAd to attempt the specified task by Id,
+         * gives feedback to user with sweetalert depending on successfull realization of task
+         * @param adId id of ad to be solved
+         */
+        async solveTask(adId) {
+            const success = await this.solveAdd(adId);
+            if (success) {
+                this.$swal({
+                    title: 'Success',
+                    text: 'Mission completed successfully\n',
+                    type: 'success',
+                    toast: true,
+                    position: 'bottom-end',
+                    timer: 3000,
+                    showConfirmButton: false,
+                });
+            } else if (this.playerInfo.lives === 0) {
+                this.$swal({
+                    title: 'Nooooooooo',
+                    text: 'You are dead :(',
+                    type: 'error',
+                });
+                this.endGame();
+            } else {
+                this.$swal({
+                    title: 'Noooooo',
+                    text: 'You have failed this task\n',
+                    type: 'error',
+                });
+            }
+        },
+
+        /**
+         * @method generateTip will generate a tip according to the risk of task and remaining
+         * lives, updates local data 'tipForSelectedAd' for showing tip (needed local variable
+         * as tip is used twice for cursive span and tooltip translation)
+         * @param risk Risk of specified task
+         */
+        generateTip(risk) {
+            const tips = {
+                highRiskLowLife: [
+                    'Are you insane? You have one life left and you want to do this???',
+                    'You sir have only one life left, for this task, pray for the Gods of Mugloar or you will meet them personally',
+                ],
+                highRisk: [
+                    'You enjoy playing with one life huh?',
+                    'As The Great Soldier of Gordocht once said \'Great man are forged by doing the impossible missions\', and then he died',
+                ],
+                mediumRisk: [
+                    'It may be a good idea',
+                    'Why not',
+                ],
+                lowRisk: [
+                    'If it pays well... go for it',
+                    'Looks easy enough, it\'s worth it',
+                ],
+                veryLowRisk: [
+                    'It\'s worth doing this task is it pays well enough... That is, 1 gold or more',
+                    'Pffffffff, child\'s play',
+                    'My son can do this task... And he isn\'t even born yet',
+                ],
+            };
+
+            let selectedTipsArray = tips.mediumRisk;
+            const { lives } = this.playerInfo;
+
+            if (risk > 4 && lives === 1) {
+                selectedTipsArray = tips.highRiskLowLife;
+            } else if (risk > 4 && lives === 2) {
+                selectedTipsArray = tips.highRisk;
+            } else if (risk > 2 && lives > 2) {
+                selectedTipsArray = tips.mediumRisk;
+            } else if ((risk > 1 && lives <= 3 && lives >= 2) || (risk > 4 && lives > 3)) {
+                selectedTipsArray = tips.lowRisk;
+            } else {
+                selectedTipsArray = tips.veryLowRisk;
+            }
+            this.tipForSelectedAd = selectedTipsArray[Math.floor(Math.random() * selectedTipsArray.length)];
+        },
+    },
+
+    watch: {
+        /**
+         * @function selectedAd will watch for changes of another ad selected and generate tip
+         */
+        selectedAd(newValue, oldValue) {
+            if (newValue !== oldValue) {
+                this.generateTip(this.getDifficultyLevel(newValue));
+            }
+        },
     },
 
     components: {
@@ -136,7 +241,6 @@ export default {
                 flex-direction: column;
                 justify-content: space-evenly;
                 align-items: center;
-                // generalize
                 .player-header-info {
                     display: flex;
                     flex-direction: column;
@@ -161,7 +265,6 @@ export default {
                     background-image: url('../assets/parchment-background-1.png');
                     background-size: cover;
                 }
-                // generalize
                 .ad-info {
                     margin-left: 50px;
                     margin-right: 40px;

@@ -1,5 +1,8 @@
 # dragons-of-mugloar
 
+Web game project of development front-end interface for Dragons of Mugloar game
+Built using Vue, vuex, sweetalert2, axios.
+
 ## Project setup
 ```
 npm install
@@ -9,21 +12,9 @@ npm install
 ```
 npm run serve
 ```
+access through `localhost:8080`
 
 ### Compiles and minifies for production
 ```
 npm run build
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
