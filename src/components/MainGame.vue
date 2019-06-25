@@ -96,9 +96,6 @@ import ShopView from './ShopView.vue';
 
 export default {
     name: 'MainGame',
-    props: {
-        msg: String,
-    },
 
     computed: {
         ...mapState([
@@ -114,6 +111,7 @@ export default {
     data() {
         return {
             tipForSelectedAd: '',
+            lockSolveAdTimer: null,
         };
     },
 
@@ -129,28 +127,43 @@ export default {
          * @param adId id of ad to be solved
          */
         async solveTask(adId) {
-            const success = await this.solveAdd(adId);
-            if (success) {
+            if (this.lockSolveAdTimer) {
+                return;
+            }
+            // Lock to avoid accidental multiple clicks
+            this.lockSolveAdTimer = setTimeout(() => { this.lockSolveAdTimer = null; }, 800);
+
+            try {
+                const success = await this.solveAdd(adId);
+                if (success) {
+                    this.$swal({
+                        title: 'Success',
+                        text: 'Mission completed successfully\n',
+                        type: 'success',
+                        toast: true,
+                        position: 'bottom-end',
+                        timer: 3000,
+                        showConfirmButton: false,
+                    });
+                } else if (this.playerInfo.lives === 0) {
+                    this.$swal({
+                        title: 'Nooooooooo',
+                        text: 'You are dead :(',
+                        type: 'error',
+                    });
+                    this.endGame();
+                } else {
+                    this.$swal({
+                        title: 'Noooooo',
+                        text: 'You have failed this task\n',
+                        type: 'error',
+                    });
+                }
+            } catch (responseError) {
+                console.error(responseError);
                 this.$swal({
-                    title: 'Success',
-                    text: 'Mission completed successfully\n',
-                    type: 'success',
-                    toast: true,
-                    position: 'bottom-end',
-                    timer: 3000,
-                    showConfirmButton: false,
-                });
-            } else if (this.playerInfo.lives === 0) {
-                this.$swal({
-                    title: 'Nooooooooo',
-                    text: 'You are dead :(',
-                    type: 'error',
-                });
-                this.endGame();
-            } else {
-                this.$swal({
-                    title: 'Noooooo',
-                    text: 'You have failed this task\n',
+                    title: 'Oooppss',
+                    text: 'An Unexpected error has occured \nThe gods of Mugloar are not happy today!',
                     type: 'error',
                 });
             }
@@ -176,6 +189,14 @@ export default {
                     'It may be a good idea',
                     'Why not',
                 ],
+                lowLives: [
+                    'Looks easy but you only have one life chap',
+                    'With one life, look for the easiest task \'till you can buy a healing potion, you never know when you can slip on a puddle and break your neck',
+                ],
+                lowLivesHighGold: [
+                    'Chap, buy yourself some healing potion first',
+                    'You got yourself one life left, enough to buy healing potion, and you\'re still going for this thing? You got a deathwish buddy',
+                ],
                 lowRisk: [
                     'If it pays well... go for it',
                     'Looks easy enough, it\'s worth it',
@@ -190,12 +211,16 @@ export default {
             let selectedTipsArray = tips.mediumRisk;
             const { lives } = this.playerInfo;
 
-            if (risk > 4 && lives === 1) {
+            if (risk > 5 && lives === 1) {
                 selectedTipsArray = tips.highRiskLowLife;
+            } else if (lives === 1 && this.playerInfo.gold >= 50) {
+                selectedTipsArray = tips.lowLivesHighGold;
             } else if (risk > 4 && lives === 2) {
                 selectedTipsArray = tips.highRisk;
             } else if (risk > 2 && lives > 2) {
                 selectedTipsArray = tips.mediumRisk;
+            } else if (lives === 1) {
+                selectedTipsArray = tips.lowLives;
             } else if ((risk > 1 && lives <= 3 && lives >= 2) || (risk > 4 && lives > 3)) {
                 selectedTipsArray = tips.lowRisk;
             } else {
@@ -207,11 +232,23 @@ export default {
 
     watch: {
         /**
-         * @function selectedAd will watch for changes of another ad selected and generate tip
+         * @watcher selectedAd will watch for changes of another ad selected and generate tip
          */
         selectedAd(newValue, oldValue) {
             if (newValue !== oldValue) {
                 this.generateTip(this.getDifficultyLevel(newValue));
+            }
+        },
+        /**
+         * @watcher adsList will watch for changes in ads list, as it is reloaded after every
+         * attempt to solve ad
+         */
+        adsList(newValue, oldValue) {
+            for (let i = 0; i < newValue.length; i += 1) {
+                if (newValue[i].adId !== oldValue[i].adId) {
+                    this.generateTip(this.getDifficultyLevel(this.selectedAd));
+                    return;
+                }
             }
         },
     },

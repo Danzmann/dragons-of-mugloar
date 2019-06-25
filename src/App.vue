@@ -4,7 +4,7 @@
             <img alt="Dragons of Mulogar" src="./assets/logo.png">
         </div>
         <StartGame v-if='playerInfo.gameId === 0'/>
-        <MainGame v-if='playerInfo.gameId !== 0' msg="Welcome to Your Vue.js App"/>
+        <MainGame v-if='playerInfo.gameId !== 0'/>
 	</div>
 </template>
 
@@ -16,23 +16,10 @@ import StartGame from './components/StartGame.vue';
 export default {
     name: 'app',
 
-    // internal state is function, to save memory?
-    data: () => ({
-        isStarted: false,
-    }),
-
     computed: {
         ...mapState([
             'playerInfo',
         ]),
-    },
-
-    updated() {
-        console.log(this.playerInfo);
-    },
-
-    mounted() {
-        console.log(this.playerInfo);
     },
 
     components: {
