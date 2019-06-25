@@ -1,5 +1,5 @@
 <template>
-    <div class="shop-wrapper">
+    <div class="scroll-wrapper">
         <div class="ads-scrolling-container" v-if="itemList.length > 0">
             <div class="ad-wrapper" v-for="(item, index) in itemList" v-bind:key="index">
                 <div class="details-wrapper">
@@ -70,6 +70,18 @@ export default {
                             title: 'Success',
                             text: 'Item purchased successfully',
                             type: 'success',
+                            toast: true,
+                            timer: 3000,
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                        },
+                    );
+                } else {
+                    this.$swal(
+                        {
+                            title: 'Oopsie',
+                            text: 'You do not have enough gold!',
+                            type: 'error',
                         },
                     );
                 }
@@ -88,43 +100,6 @@ export default {
 
 <style scoped lang="scss">
 @import '../styles/utilities.scss';
-
-.shop-wrapper {
-    background-image: url('../assets/scroll-background-2.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 600px;
-    width: 450px;
-    .ads-scrolling-container {
-        height: calc(100% - 220px);
-        padding: 30px;
-        padding-right: 0;
-        margin-top: 75px;
-        overflow-y: auto;
-        overflow-x: hidden;
-
-        display: flex;
-        flex-direction: column;
-
-        .ad-wrapper {
-            cursor: pointer;
-            width: calc(100% - 50px);
-            margin-top: 10px;
-            margin-bottom: 5px;
-            display: flex;
-            flex-direction: column;
-            border-top: 1px solid black;
-            // generalize
-            .details-wrapper {
-                margin-top: 5px;
-                display: flex;
-                align-items: center;
-                span {
-                    margin-left: 10px;
-                }
-            }
-        }
-    }
-}
+@import '../styles/scroll-wrapper.scss';
 
 </style>

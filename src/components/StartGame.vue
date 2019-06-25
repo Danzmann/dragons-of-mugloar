@@ -17,6 +17,10 @@ export default {
     methods: {
         ...mapActions(['startGame', 'getAddsList']),
 
+        /**
+         * @method beginGame will start game (get player information and gameId) and
+         * fetch ads list afterwards
+         */
         async beginGame() {
             await this.startGame();
             this.getAddsList();
