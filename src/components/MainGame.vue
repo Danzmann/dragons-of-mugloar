@@ -244,10 +244,12 @@ export default {
          * attempt to solve ad
          */
         adsList(newValue, oldValue) {
-            for (let i = 0; i < newValue.length; i += 1) {
-                if (newValue[i].adId !== oldValue[i].adId) {
-                    this.generateTip(this.getDifficultyLevel(this.selectedAd));
-                    return;
+            if (newValue.length === oldValue.length) {
+                for (let i = 0; i < newValue.length; i += 1) {
+                    if (newValue[i].adId !== oldValue[i].adId) {
+                        this.generateTip(this.getDifficultyLevel(this.selectedAd));
+                        return;
+                    }
                 }
             }
         },
