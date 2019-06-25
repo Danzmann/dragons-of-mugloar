@@ -77,9 +77,8 @@ export default new Vuex.Store({
          * @param adId id of ad to be solved
          */
         solveAdd: (context, adId) => new Promise(async (resolve, reject) => {
-            let response = await axios.post(`${API_URL}/${context.state.playerInfo.gameId}/solve/${adId}/`);
-
             try {
+                let response = await axios.post(`${API_URL}/${context.state.playerInfo.gameId}/solve/${adId}/`);
                 if (response.data.success) {
                     response = response.data;
                     context.commit('SOLVED_ADD', { adId, response });
@@ -87,10 +86,14 @@ export default new Vuex.Store({
                     resolve(true);
                 } else {
                     context.commit('FAILED_ADD', adId);
+                    context.dispatch('getAddsList');
                     resolve(false);
                 }
             } catch (requestError) {
                 reject(requestError);
+                if (requestError.response.data.error === 'No ad by this ID exists') {
+                    context.dispatch('getAddsList');
+                }
             }
         }),
     },
@@ -107,6 +110,7 @@ export default new Vuex.Store({
                 'risky',
                 'playing with fire',
                 'suicide mission',
+                'impossible',
             ];
             return writtenLevels.indexOf(state.adsList[index].probability.toLowerCase()) + 1;
         },
