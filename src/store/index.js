@@ -2,7 +2,7 @@ import Vuex from 'vuex';
 import Vue from 'vue';
 import axios from 'axios';
 
-const API_URL = 'https://dragonsofmugloar.com/api/v2';
+export const API_URL = 'https://dragonsofmugloar.com/api/v2';
 
 Vue.use(Vuex);
 
@@ -22,10 +22,12 @@ export default new Vuex.Store({
     },
     mutations: {
         START_GAME: (state, info) => { state.playerInfo = info; },
+        SET_PLAYER_INFO: (state, info) => { state.playerInfo = { ...state.playerInfo, ...info }; },
         GET_ADD_LIST: (state, list) => { state.adsList = list; },
         SELECT_AD: (state, index) => { state.selectedAd = index; },
-        SOLVED_ADD: (state, adId, reward) => {
-            state.playerInfo = { ...state.playerInfo, ...reward };
+        SOLVED_ADD: (state, payload) => {
+            const { adId, response } = payload;
+            state.playerInfo = { ...state.playerInfo, ...response };
             state.adsList = state.adsList.filter(item => (item.adId !== adId));
         },
         FAILED_ADD: (state, adId) => {
@@ -72,10 +74,9 @@ export default new Vuex.Store({
 
             try {
                 if (response.data.success) {
-                    // Deletes keys that do not belong in playerInfo state object
-                    response = delete response.message;
-                    response = delete response.success;
-                    context.commit('SOLVED_ADD', adId, response.data);
+                    response = response.data;
+                    context.commit('SOLVED_ADD', { adId, response });
+                    context.dispatch('getAddsList');
                 } else {
                     context.commit('FAILED_ADD', adId);
                 }
@@ -91,6 +92,7 @@ export default new Vuex.Store({
                 'piece of cake',
                 'walk in the park',
                 'quite likely',
+                'sure thing',
                 'hmmm....',
                 'gamble',
                 'risky',
