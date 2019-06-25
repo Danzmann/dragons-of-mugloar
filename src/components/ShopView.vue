@@ -59,6 +59,10 @@ export default {
             }
         },
 
+        /**
+         * @method buyItem will perform buy item operation by sending POST request to shop buy
+         * endpoint, returns feedback to user of whether purchase was successfull or not on swal
+         */
         async buyItem(itemId) {
             const response = await axios.post(`${API_URL}/${this.playerInfo.gameId}/shop/buy/${itemId}`);
 
