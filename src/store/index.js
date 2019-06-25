@@ -14,7 +14,7 @@ const initialPlayerState = {
     score: 0,
     highScore: 0,
     turn: 0,
-}
+};
 
 export default new Vuex.Store({
     state: {
@@ -24,9 +24,13 @@ export default new Vuex.Store({
     },
     mutations: {
         START_GAME: (state, info) => { state.playerInfo = info; },
-        END_GAME: (state) => { state.playerInfo = initialPlayerState; state.selectedAd = -1; },
+        END_GAME: (state) => {
+            state.playerInfo = initialPlayerState;
+            state.selectedAd = -1;
+        },
         SET_PLAYER_INFO: (state, info) => { state.playerInfo = { ...state.playerInfo, ...info }; },
-        GET_ADD_LIST: (state, list) => { state.adsList = list; },
+        // For some reason, some tasks come as 'encrypted', not sure why but have to filter these out
+        GET_ADD_LIST: (state, list) => { state.adsList = list.filter(item => !item.encrypted); },
         SELECT_AD: (state, index) => { state.selectedAd = index; },
         SOLVED_ADD: (state, payload) => {
             const { adId, response } = payload;
