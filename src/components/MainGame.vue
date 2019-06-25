@@ -68,6 +68,9 @@
                                     <!--<span class="tooltip">{{adsList[selectedAd].probability}}</span>-->
                                 </div>
                             </div>
+                            <div class="button-wrapper" v-on:click="solveAdd(adsList[selectedAd].adId)">
+                                <a href="#" class="yellow-btn">Solve task</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -82,7 +85,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 import AdsView from './AdsView.vue';
 import ShopView from './ShopView.vue';
 
@@ -98,6 +101,14 @@ export default {
             'selectedAd',
             'adsList',
         ]),
+    },
+
+    mounted() {
+        //console.log(this.playerInfo);
+    },
+
+    methods: {
+        ...mapActions(['solveAdd']),
     },
 
     components: {
@@ -152,8 +163,8 @@ export default {
                 }
                 // generalize
                 .ad-info {
-                    margin-left: 30px;
-                    margin-right: 30px;
+                    margin-left: 50px;
+                    margin-right: 40px;
                     min-width: 390px;
                     min-height: 270px;
                     background-image: url('../assets/parchment-background-1.png');
@@ -171,14 +182,20 @@ export default {
                         display: flex;
                         flex-direction: column;
                         align-items: left;
-                        justify-content: center;
+                        justify-content: flex-start;
+                        width: 90%;
 
                         // generalize
                         .details-wrapper {
                             display: flex;
+                            align-items: center;
                             span {
                                 margin-left: 10px;
                             }
+                        }
+
+                        .button-wrapper {
+                            margin-top: 5px;
                         }
                     }
                 }

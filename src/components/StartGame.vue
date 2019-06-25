@@ -15,9 +15,11 @@ export default {
     name: 'start',
 
     methods: {
-        ...mapActions(['startGame']),
-        beginGame() {
-            this.startGame();
+        ...mapActions(['startGame', 'getAddsList']),
+
+        async beginGame() {
+            await this.startGame();
+            this.getAddsList();
         },
     },
 };
