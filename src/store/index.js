@@ -6,22 +6,25 @@ export const API_URL = 'https://dragonsofmugloar.com/api/v2';
 
 Vue.use(Vuex);
 
+const initialPlayerState = {
+    gameId: 0,
+    lives: 0,
+    gold: 0,
+    level: 0,
+    score: 0,
+    highScore: 0,
+    turn: 0,
+}
+
 export default new Vuex.Store({
     state: {
-        playerInfo: {
-            gameId: 0,
-            lives: 0,
-            gold: 0,
-            level: 0,
-            score: 0,
-            highScore: 0,
-            turn: 0,
-        },
+        playerInfo: initialPlayerState,
         adsList: [],
         selectedAd: -1,
     },
     mutations: {
         START_GAME: (state, info) => { state.playerInfo = info; },
+        END_GAME: (state) => { state.playerInfo = initialPlayerState; state.selectedAd = -1; },
         SET_PLAYER_INFO: (state, info) => { state.playerInfo = { ...state.playerInfo, ...info }; },
         GET_ADD_LIST: (state, list) => { state.adsList = list; },
         SELECT_AD: (state, index) => { state.selectedAd = index; },
@@ -77,10 +80,11 @@ export default new Vuex.Store({
                     response = response.data;
                     context.commit('SOLVED_ADD', { adId, response });
                     context.dispatch('getAddsList');
+                    resolve(true);
                 } else {
                     context.commit('FAILED_ADD', adId);
+                    resolve(false);
                 }
-                resolve();
             } catch (requestError) {
                 reject(requestError);
             }
@@ -94,6 +98,7 @@ export default new Vuex.Store({
                 'quite likely',
                 'sure thing',
                 'hmmm....',
+                'rather detrimental',
                 'gamble',
                 'risky',
                 'playing with fire',
