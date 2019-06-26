@@ -109,4 +109,8 @@ export default {
 @import '../styles/utilities.scss';
 @import '../styles/scroll-wrapper.scss';
 
+.details-wrapper {
+    cursor: initial;
+}
+
 </style>

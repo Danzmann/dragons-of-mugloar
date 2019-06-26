@@ -1,6 +1,7 @@
 # dragons-of-mugloar
 
 Web game project of development front-end interface for Dragons of Mugloar game
+
 Built using Vue, vuex, sweetalert2, axios.
 
 ## Project setup

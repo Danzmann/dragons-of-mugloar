@@ -4,8 +4,11 @@
             <AdsView />
             <div class="info-wrapper">
                 <div class="player-header-info">
-                    <h2>Player Status</h2>
-                    <table class="player-info">
+                    <div class="title-wrapper">
+                        <span v-bind:class="{ active : !this.switchReputationStatus }" v-on:click="switchPlayerStats">Player Status</span>
+                        <span v-bind:class="{ active : this.switchReputationStatus }" v-on:click="switchPlayerStats">Player Reputation</span>
+                    </div>
+                    <table v-if="!this.switchReputationStatus" class="player-info">
                         <tbody>
                             <tr class="handwritten-border">
                                 <td class="lined thin"> Lives </td>
@@ -26,6 +29,22 @@
                             <tr class="handwritten-border">
                                 <td class="lined thin"> Level </td>
                                 <td class="lined thin"> {{playerInfo.level}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table v-if="this.switchReputationStatus" class="player-info">
+                        <tbody>
+                            <tr class="handwritten-border">
+                                <td class="lined thin">Underworld</td>
+                                <td class="lined thin">{{repUnderworld}}</td>
+                            </tr>
+                            <tr class="handwritten-border">
+                                <td class="lined thin">State</td>
+                                <td class="lined thin">{{repState}}</td>
+                            </tr>
+                            <tr class="handwritten-border">
+                                <td class="lined thin">People</td>
+                                <td class="lined thin">{{repPeople}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -68,7 +87,8 @@
                                     <span class="tooltip">{{this.tipForSelectedAd}}</span>
                                 </div>
                             </div>
-                            <div class="button-wrapper" v-on:click="solveTask(adsList[selectedAd].adId)">
+                            <div class="button-wrapper"
+                                v-on:click="solveTask(adsList[selectedAd].adId)">
                                 <a href="#" class="yellow-btn">Solve task</a>
                             </div>
                         </div>
@@ -85,12 +105,14 @@
 </template>
 
 <script>
+import axios from 'axios';
 import {
     mapState,
     mapActions,
     mapGetters,
     mapMutations,
 } from 'vuex';
+import { API_URL } from '../store';
 import AdsView from './AdsView.vue';
 import ShopView from './ShopView.vue';
 
@@ -112,6 +134,12 @@ export default {
         return {
             tipForSelectedAd: '',
             lockSolveAdTimer: null,
+            // When true, will replace player stats parchment card with reputation
+            // and vice versa
+            switchReputationStatus: false,
+            repUnderworld: 0,
+            repState: 0,
+            repPeople: 0,
         };
     },
 
@@ -226,7 +254,28 @@ export default {
             } else {
                 selectedTipsArray = tips.veryLowRisk;
             }
-            this.tipForSelectedAd = selectedTipsArray[Math.floor(Math.random() * selectedTipsArray.length)];
+            this.tipForSelectedAd = selectedTipsArray[
+                Math.floor(Math.random() * selectedTipsArray.length)
+            ];
+        },
+
+        async switchPlayerStats(event) {
+            if (!event.target.classList.contains('active')) {
+                this.switchReputationStatus = !this.switchReputationStatus;
+                if (this.switchReputationStatus) {
+                    const {
+                        data: {
+                            underworld,
+                            state,
+                            people,
+                        },
+                    } = await axios.post(`${API_URL}/${this.playerInfo.gameId}/investigate/reputation/`);
+
+                    this.repUnderworld = underworld;
+                    this.repState = state;
+                    this.repPeople = people;
+                }
+            }
         },
     },
 
@@ -244,13 +293,8 @@ export default {
          * attempt to solve ad
          */
         adsList(newValue, oldValue) {
-            if (newValue.length === oldValue.length) {
-                for (let i = 0; i < newValue.length; i += 1) {
-                    if (newValue[i].adId !== oldValue[i].adId) {
-                        this.generateTip(this.getDifficultyLevel(this.selectedAd));
-                        return;
-                    }
-                }
+            if (newValue.length !== oldValue.length) {
+                this.generateTip(this.getDifficultyLevel(this.selectedAd));
             }
         },
     },
@@ -285,8 +329,25 @@ export default {
                     flex-direction: column;
                     align-items: center;
 
-                    h2 {
-                        margin-bottom: 5px;
+                    .title-wrapper {
+                        margin-top: 15px;
+                        margin-bottom: 2px;
+                        display: flex;
+                        align-items: center;
+                        span {
+                            // margin: top right bottom left
+                            margin: 8px 5px 0 5px;
+                            font-weight: 600;
+                            font-size: 17px;
+                            cursor: pointer;
+                            color: grey;
+                        }
+
+                        span.active {
+                            font-size: 20px;
+                            cursor: initial;
+                            color: initial;
+                        }
                     }
 
                     .player-info {

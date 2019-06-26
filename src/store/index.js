@@ -29,7 +29,8 @@ export default new Vuex.Store({
             state.selectedAd = -1;
         },
         SET_PLAYER_INFO: (state, info) => { state.playerInfo = { ...state.playerInfo, ...info }; },
-        // For some reason, some tasks come as 'encrypted', not sure why but have to filter these out
+        // For some reason, some tasks come as 'encrypted', not sure why but have to
+        // filter these out
         GET_ADD_LIST: (state, list) => { state.adsList = list.filter(item => !item.encrypted); },
         SELECT_AD: (state, index) => { state.selectedAd = index; },
         SOLVED_ADD: (state, payload) => {
@@ -98,6 +99,11 @@ export default new Vuex.Store({
         }),
     },
     getters: {
+        /**
+         * @getter getDifficultyLevel will return the difficulty level in a scale from
+         * 1 to 12 based on my own assumption of the pre-defined strings
+         * @param index index of the ad in the adsList state
+         */
         getDifficultyLevel: state => (index) => {
             const writtenLevels = [
                 'piece of cake',
