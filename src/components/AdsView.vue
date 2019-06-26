@@ -1,7 +1,8 @@
 <template>
     <div class="scroll-wrapper">
         <div class="ads-scrolling-container" v-if="adsList.length > 0">
-            <div class="ad-wrapper" v-for="(ad, index) in adsList" v-bind:key="index" v-on:click="selectAd(index)">
+            <div class="ad-wrapper" v-for="(ad, index) in adsList" v-bind:key="index"
+                v-on:click="selectAd(index)">
                 <div class="details-wrapper">
                     <div class="tooltip-wrapper">
                         <span class="cursive">{{'* '+adsList[index].message}}</span>
