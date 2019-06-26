@@ -64,8 +64,17 @@
             <ShopView />
         </div>
         <div class="footer">
+            <span>Copyright</span>
+            <br/>
             <span>Assets by:</span>
-            <a href="https://pngtree.com/">Graphics from pngtree.com</a>
+            <a href="https://pngtree.com/">Background graphics from pngtree.com</a>
+            <br/>
+            <p>
+            'Dragons of Mugloar' intellectual property and logo property of Big Bank AS,
+            used only under purpose of accomplishing specified task on
+            <a href="https://www.dragonsofmugloar.com/">dragonsofmugloar</a>
+            requested by BigBank for application to front-end developer position
+            </p>
         </div>
     </div>
 </template>
