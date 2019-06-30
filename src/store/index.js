@@ -29,7 +29,8 @@ export default new Vuex.Store({
             state.selectedAd = -1;
         },
         SET_PLAYER_INFO: (state, info) => { state.playerInfo = { ...state.playerInfo, ...info }; },
-        // For some reason, some tasks come as 'encrypted', not sure why but have to filter these out
+        // For some reason, some tasks come as 'encrypted', not sure why but have to
+        // filter these out
         GET_ADD_LIST: (state, list) => { state.adsList = list.filter(item => !item.encrypted); },
         SELECT_AD: (state, index) => { state.selectedAd = index; },
         SOLVED_ADD: (state, payload) => {
@@ -77,9 +78,8 @@ export default new Vuex.Store({
          * @param adId id of ad to be solved
          */
         solveAdd: (context, adId) => new Promise(async (resolve, reject) => {
-            let response = await axios.post(`${API_URL}/${context.state.playerInfo.gameId}/solve/${adId}/`);
-
             try {
+                let response = await axios.post(`${API_URL}/${context.state.playerInfo.gameId}/solve/${adId}/`);
                 if (response.data.success) {
                     response = response.data;
                     context.commit('SOLVED_ADD', { adId, response });
@@ -87,14 +87,23 @@ export default new Vuex.Store({
                     resolve(true);
                 } else {
                     context.commit('FAILED_ADD', adId);
+                    context.dispatch('getAddsList');
                     resolve(false);
                 }
             } catch (requestError) {
                 reject(requestError);
+                if (requestError.response.data.error === 'No ad by this ID exists') {
+                    context.dispatch('getAddsList');
+                }
             }
         }),
     },
     getters: {
+        /**
+         * @getter getDifficultyLevel will return the difficulty level in a scale from
+         * 1 to 12 based on my own assumption of the pre-defined strings
+         * @param index index of the ad in the adsList state
+         */
         getDifficultyLevel: state => (index) => {
             const writtenLevels = [
                 'piece of cake',
@@ -107,6 +116,7 @@ export default new Vuex.Store({
                 'risky',
                 'playing with fire',
                 'suicide mission',
+                'impossible',
             ];
             return writtenLevels.indexOf(state.adsList[index].probability.toLowerCase()) + 1;
         },

@@ -22,7 +22,7 @@
 
 <script>
 import axios from 'axios';
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import { API_URL } from '../store';
 
 export default {
@@ -43,6 +43,7 @@ export default {
     },
 
     methods: {
+        ...mapActions({ getAds: 'getAddsList' }),
         ...mapMutations({ setInfo: 'SET_PLAYER_INFO' }),
         async loadShopItems() {
             const response = await axios.get(`${API_URL}/${this.playerInfo.gameId}/shop`);
@@ -80,6 +81,9 @@ export default {
                             showConfirmButton: false,
                         },
                     );
+                    // For some unknown reason, ads list crashes after purchasing of some items,
+                    // temporary fix by reloading ads list after every purchase (to be investigated)
+                    this.getAds();
                 } else {
                     this.$swal(
                         {
@@ -90,7 +94,6 @@ export default {
                     );
                 }
             } catch (responseError) {
-                console.error(responseError);
                 this.$swal({
                     title: 'Oooppss',
                     text: 'An Unexpected error has occured \nThe gods of Mugloar are not happy today!',
@@ -105,5 +108,9 @@ export default {
 <style scoped lang="scss">
 @import '../styles/utilities.scss';
 @import '../styles/scroll-wrapper.scss';
+
+.details-wrapper {
+    cursor: initial;
+}
 
 </style>
