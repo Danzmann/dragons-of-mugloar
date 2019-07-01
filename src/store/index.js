@@ -77,26 +77,18 @@ export default new Vuex.Store({
          * @function solveAdd http post request will attempt to solve requested ad by it's Id
          * @param adId id of ad to be solved
          */
-        solveAdd: (context, adId) => new Promise(async (resolve, reject) => {
-            try {
-                let response = await axios.post(`${API_URL}/${context.state.playerInfo.gameId}/solve/${adId}/`);
-                if (response.data.success) {
-                    response = response.data;
-                    context.commit('SOLVED_ADD', { adId, response });
-                    context.dispatch('getAddsList');
-                    resolve(true);
-                } else {
-                    context.commit('FAILED_ADD', adId);
-                    context.dispatch('getAddsList');
-                    resolve(false);
-                }
-            } catch (requestError) {
-                reject(requestError);
-                if (requestError.response.data.error === 'No ad by this ID exists') {
-                    context.dispatch('getAddsList');
-                }
+        solveAdd: async (context, adId) => {
+            let response = await axios.post(`${API_URL}/${context.state.playerInfo.gameId}/solve/${adId}/`);
+            if (response.data.success) {
+                response = response.data;
+                context.commit('SOLVED_ADD', { adId, response });
+                context.dispatch('getAddsList');
+            } else {
+                context.commit('FAILED_ADD', adId);
+                context.dispatch('getAddsList');
             }
-        }),
+            return response;
+        },
     },
     getters: {
         /**
